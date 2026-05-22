@@ -1,4 +1,7 @@
-﻿namespace Dsw2026Ej11.Collections;
+﻿using Dsw2026Ej11.Domain;
+using System.Globalization;
+
+namespace Dsw2026Ej11.Collections;
 
 /*
  * Para cada punto crear un método que permita:
@@ -16,4 +19,102 @@
  */
 public class CasoLinq
 {
+    //1
+    public static void GetPrimero(List<Libro> libros) 
+    {
+        var primero = libros.FirstOrDefault();
+        Console.WriteLine("primer libro:");
+        if (primero != null)
+        {
+            Console.WriteLine($"ID: {primero.Id} - Título: {primero.Titulo} - Precio: $ {primero.Precio:N2}");
+        }
+    } 
+    //2
+    public static void GetUltimo(List<Libro> libros)
+    {
+        var ultimo = libros.LastOrDefault();
+        Console.WriteLine("ultimo libro:");
+        if (ultimo != null)
+        {
+            Console.WriteLine($"ID: {ultimo.Id} - Título: {ultimo.Titulo} - Precio: $ {ultimo.Precio:N2}");
+        }
+    }
+    //3
+    public static void GetTotalPrecios(List<Libro> libros)
+    {
+        decimal suma = libros.Sum(l => l.Precio);
+        Console.WriteLine($"la suma de los precios es: {suma:N2}");
+    }
+    //4
+    public static void GetPromedioPrecios(List<Libro> libros, out decimal prom)
+    {
+        prom = libros.Average(l => l.Precio);
+        Console.WriteLine($"el promedio de los precios es: {prom:N2}");
+    }
+    //5
+    public static void GetListById(List<Libro> libros)
+    {
+        var libroFiltrar = libros.Where(l => l.Id > 15);
+        Console.WriteLine("libros con id mayor a 15: ");
+        foreach (var l in libroFiltrar)
+        {
+            Console.WriteLine($"ID: {l.Id} - Título: {l.Titulo} - Precio: {l.Precio:N2}");
+        }
+    }
+    //6
+    public static List<string> GetLibros(List<Libro> libros)
+    {
+        var cultura = CultureInfo.GetCultureInfo("es-AR");
+        var libroFormateado = libros.Select(l => $"ID: {l.Id}, Titulo: {l.Titulo}, Precio {l.Precio.ToString("C2", cultura)}")
+            .ToList();
+        Console.WriteLine("libros formateados");
+        foreach(var item in libroFormateado)
+        {
+            Console.WriteLine(item);
+        }
+        return libroFormateado;
+    }
+    //7
+    public static void GetMayorPrecio (List<Libro> libros)
+    {
+        var precioMax = libros.Max(l => l.Precio);
+        var libroMax = libros.FirstOrDefault(l => l.Precio ==  precioMax);
+        Console.WriteLine($"El precio mas alto es:");
+        if (libroMax != null)
+        {
+            Console.WriteLine($"ID: {libroMax.Id} - Título: {libroMax.Titulo} - Precio: $ {libroMax.Precio:N2}");
+        }
+    }
+    //8
+    public static void GetMenorPrecio (List<Libro> libros)
+    {
+        var precioMin = libros.Min(l => l.Precio);
+        var libroMin = libros.FirstOrDefault(l => l.Precio == precioMin);
+        Console.WriteLine($"El precio mas bajo es:");
+        if (libroMin != null)
+        {
+            Console.WriteLine($"ID: {libroMin.Id} - Título: {libroMin.Titulo} - Precio: $ {libroMin.Precio:N2}");
+        }
+    }
+    //9 
+    public static void GetMayorPromedio(List<Libro> libros)
+    {
+        var mayorProm = libros.Where(l => l.Precio > libros.Average(l => l.Precio));
+        Console.WriteLine("Los libros con precio payor al promedio:");
+        foreach (var l in mayorProm)
+        {
+            Console.WriteLine($"ID: {l.Id} - Título: {l.Titulo} - Precio: $ {l.Precio:N2}");
+        }
+    }
+    //10
+    public static void GetDescendente(List<Libro> libros)
+    {
+        var libroOrdenado = libros.OrderByDescending(l => l.Titulo).ToList();
+        Console.WriteLine("Ordenados de manera descendente por nombre:");
+        foreach (var l in libroOrdenado)
+        {
+            Console.WriteLine($"ID: {l.Id} - Título: {l.Titulo} - Precio: $ {l.Precio:N2}");
+        }
+    }
+
 }
